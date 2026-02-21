@@ -11,4 +11,4 @@ transform = transforms.Compose([
 
 def transform_image(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-    return transform(image).unsqueeze(0) # Add batch dimension (1, 3, 224, 224)
+    return transform(image).unsqueeze(0) # Transform the image to match the net and add batch dimension (1, 3, 224, 224)

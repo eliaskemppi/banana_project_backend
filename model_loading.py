@@ -3,8 +3,7 @@ from torchvision import models
 import torch.nn as nn
 import torch.nn.functional as F
 
-# 1. Define your custom architecture again (must match your notebook)
-
+# Define the custom CNN
 class BananaNet(nn.Module):
     def __init__(self, num_classes=2):
         super(BananaNet, self).__init__()
@@ -18,14 +17,14 @@ class BananaNet(nn.Module):
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 32 * 56 * 56) # Flatten
+        x = x.view(-1, 32 * 56 * 56)
         x = F.relu(self.fc1(x))
         x = self.dropout(x)
         x = self.fc2(x)
         return x
 
 def load_models():
-    # Load Custom CNN
+    # Load custom CNN
     custom_model = BananaNet()
     custom_model.load_state_dict(torch.load("saved_models/BananaNet.pth", map_location="cpu"))
     custom_model.eval() # Set to evaluation mode

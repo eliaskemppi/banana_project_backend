@@ -1,13 +1,11 @@
-# API
-
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
+
 from model_loading import load_models
 from utils import transform_image
 import torch
 
 app = FastAPI()
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,18 +18,24 @@ app.add_middleware(
 custom_model, mobilenet = load_models()
 classes = ["Overripe", "Ripe"]
 
+@app.get("/")
+def health():
+    return {"status": "awake"}
+
+# API endpoint to handle image uploads and return predictions
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    # 1. Read image
+    
+    # Read image
     img_bytes = await file.read()
     tensor = transform_image(img_bytes)
 
-    # 2. Run Inference
+    # Run Inference
     with torch.no_grad():
         out_custom = custom_model(tensor)
         out_mobile = mobilenet(tensor)
 
-    # 3. Get results (Probabilities)
+    # Get probabilities
     prob_custom = torch.nn.functional.softmax(out_custom, dim=1)
     prob_mobile = torch.nn.functional.softmax(out_mobile, dim=1)
 

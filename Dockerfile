@@ -1,21 +1,25 @@
-# 1. Use a lightweight Python image
+# Python image
 FROM python:3.10-slim
 
-# 2. Set the working directory inside the container
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# 3. Copy only the requirements first (optimizes build speed)
+# Copy only the requirements first (optimizes build speed)
 COPY requirements.txt .
 
-# 4. Install dependencies
-# --no-cache-dir keeps the image size small
+# Install dependencies
+
+# First, install the light-weight CPU versions of torch
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir fastapi uvicorn python-multipart Pillow
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy your code and saved_models into the container
+# Copy the code and saved_models into the container
 COPY . .
 
-# 6. Tell Docker which port the app runs on
+# Define the port the app will run on
 EXPOSE 8000
 
-# 7. The command to start your FastAPI server
+# The command to start the FastAPI server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
