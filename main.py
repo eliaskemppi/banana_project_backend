@@ -16,7 +16,7 @@ app.add_middleware(
 
 # Load models once on startup to save memory
 custom_model, mobilenet = load_models()
-classes = ["Overripe", "Ripe"]
+classes = ["Overripe", "Ripe", "Spotty", "Underripe"]
 
 @app.get("/")
 def health():

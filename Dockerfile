@@ -1,7 +1,6 @@
 # Python image
 FROM python:3.10-slim
 
-
 # Set the working directory inside the container
 WORKDIR /app
 
