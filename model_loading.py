@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 # Define the custom CNN
 class BananaNet(nn.Module):
-    def __init__(self, num_classes=2):
+    def __init__(self, num_classes=4):
         super(BananaNet, self).__init__()
         self.conv1 = nn.Conv2d(3, 16, 3, padding=1)
         self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
@@ -31,7 +31,7 @@ def load_models():
 
     # Load MobileNetV2
     mobilenet = models.mobilenet_v2()
-    mobilenet.classifier[1] = nn.Linear(1280, 2) # Match your output classes
+    mobilenet.classifier[1] = nn.Linear(1280, 4) # Match your output classes
     mobilenet.load_state_dict(torch.load("saved_models/MobileNet.pth", map_location="cpu"))
     mobilenet.eval()
 
