@@ -31,7 +31,7 @@ def load_models():
 
     # Load MobileNetV2
     mobilenet = models.mobilenet_v2()
-    mobilenet.classifier[1] = nn.Linear(1280, 4) # Match your output classes
+    mobilenet.classifier[1] = nn.Linear(1280, 4) # Match the output classes
     mobilenet.load_state_dict(torch.load("saved_models/MobileNet.pth", map_location="cpu"))
     mobilenet.eval()
 

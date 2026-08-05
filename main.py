@@ -9,15 +9,16 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # For production, use ["http://localhost:3000"]
+    allow_origins=["https://banana-project-frontend.onrender.com/"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load models once on startup to save memory
+# Load models once on startup
 custom_model, mobilenet = load_models()
 classes = ["Overripe", "Ripe", "Spotty", "Underripe"]
 
+# API endpoint to check if the server is running
 @app.get("/")
 def health():
     return {"status": "awake"}

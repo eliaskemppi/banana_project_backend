@@ -2,7 +2,7 @@ import io
 from PIL import Image
 from torchvision import transforms
 
-# This MUST match the transforms you used in your training notebook!
+# Transforming the image to match the trained model's expected input format (224x224, normalized)
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -11,4 +11,4 @@ transform = transforms.Compose([
 
 def transform_image(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-    return transform(image).unsqueeze(0) # Transform the image to match the net and add batch dimension (1, 3, 224, 224)
+    return transform(image).unsqueeze(0)
