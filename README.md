@@ -6,7 +6,7 @@ Starting the app might take a minute because it's hosted for free
 
 ![Example](images/demo.png)
 
-[![Watch a demo video](https://youtu.be/IBvfsqcrUNA/maxresdefault.jpg)](https://youtu.be/IBvfsqcrUNA)
+Video demo: https://youtu.be/IBvfsqcrUNA
 
 A full-stack machine learning application that predicts the ripeness of bananas using Computer Vision. This project benchmarks a custom-built CNN against a fine-tuned MobileNetV2 to demonstrate the trade-offs between model complexity, accuracy, and inference speed. This is an end-to-end project which means I did all parts of the project myself (with the help of a bit of ChatGPT), including data acquisition, model training and evaluation, model selection and a Next.js frontend.
 
@@ -20,7 +20,7 @@ Python, PyTorch, FastAPI, Docker, Next.js, TailwindCSS
 
 I built my own custom dataset of self-collected pictures of bananas.
 
-#### **Classes:** Under-ripe, Ripe, Spotty, Overripe.
+**Classes:** Under-ripe, Ripe, Spotty, Overripe.
 
 Captured images under direct sunlight, kitchen LED lighting, low lighting etc. and varying backgrounds (countertops, wood, plates) to prevent the model from learning the background instead of the fruit. Also included multiple bananas of the same ripeness in photos.
 
