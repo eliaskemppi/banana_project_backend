@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://banana-project-frontend.onrender.com/"],
+    allow_origins=["https://banana-project-frontend.onrender.com"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

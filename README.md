@@ -36,7 +36,7 @@ Split sizes (188 images total):
 
 - TEST: overripe: 8, ripe: 8, spotty: 8, underripe: 10
 
-#### **Data preprocessing and augmentation**
+#### **Data preprocessing**
 
 Raw images were transformed into tensors suitable for Deep Learning.
 
@@ -44,7 +44,7 @@ Raw images were transformed into tensors suitable for Deep Learning.
 
 - Geometry: Resized to $224 \times 224$ pixels.
 
-**Augmentation:**
+#### **Augmentation:**
 
 To artificially expand the dataset and reduce overfitting, I implemented RandomHorizontalFlip to the training set.
 
