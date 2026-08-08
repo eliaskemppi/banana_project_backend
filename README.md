@@ -93,3 +93,6 @@ banana-ripometer/
 * **`training/`** — Jupyter notebooks used for model training and evaluation.
 * **`saved_models/`** — Trained `.pth` model checkpoints.
 * **`images/`** — Images used in this README.
+* **`main.py`** — Runs FastAPI
+* **`model_loading.py`** — Contains a function that loads the trained models.
+* **`utils.py`** — Contains a function that applies the image transformation used in training.
