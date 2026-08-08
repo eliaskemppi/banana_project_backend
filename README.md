@@ -8,7 +8,7 @@ Starting the app might take a minute because it's hosted for free
 
 Video demo: https://youtu.be/IBvfsqcrUNA
 
-A full-stack machine learning application that predicts the ripeness of bananas using Computer Vision. This project benchmarks a custom-built CNN against a fine-tuned MobileNetV2 to demonstrate the trade-offs between model complexity, accuracy, and inference speed. This is an end-to-end project which means I did all parts of the project myself (with the help of a bit of ChatGPT), including data acquisition, model training and evaluation, model selection and a Next.js frontend.
+A full-stack machine learning application that predicts the ripeness of bananas using Computer Vision. This project benchmarks a custom-built CNN against a fine-tuned MobileNetV2 to demonstrate the trade-offs between model complexity and accuracy. This is an end-to-end project which means I did all parts of the project myself (with the help of a bit of ChatGPT), including data acquisition, model training and evaluation, model selection and a Next.js frontend.
 
 ## Tech-Stack
 
@@ -44,7 +44,7 @@ Raw images were transformed into tensors suitable for Deep Learning.
 
 - Geometry: Resized to $224 \times 224$ pixels.
 
-#### **Augmentation:**
+#### **Data Augmentation:**
 
 To artificially expand the dataset and reduce overfitting, I implemented RandomHorizontalFlip to the training set.
 
@@ -74,4 +74,22 @@ MobileNetV2 outperforms the custom CNN despite both being trained on the same da
 
 - Collecting more data for the dataset would likely improve model performance.
 
+## Structure
 
+banana-ripometer/
+├── images/
+├── saved_models/
+├── training/
+├── .gitignore
+├── Dockerfile
+├── main.py
+├── model_loading.py
+├── requirements.txt
+├── utils.py
+└── README.md
+
+- training/ - Jupyter notebooks used for model training and evaluation.
+
+- saved_models/ - Trained .pth model checkpoints.
+
+- images/ - Images used in this README.
