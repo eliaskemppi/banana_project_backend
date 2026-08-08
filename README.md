@@ -76,6 +76,7 @@ MobileNetV2 outperforms the custom CNN despite both being trained on the same da
 
 ## Structure
 
+```text
 banana-ripometer/
 ├── images/
 ├── saved_models/
@@ -87,9 +88,8 @@ banana-ripometer/
 ├── requirements.txt
 ├── utils.py
 └── README.md
+```
 
-- training/ - Jupyter notebooks used for model training and evaluation.
-
-- saved_models/ - Trained .pth model checkpoints.
-
-- images/ - Images used in this README.
+* **`training/`** — Jupyter notebooks used for model training and evaluation.
+* **`saved_models/`** — Trained `.pth` model checkpoints.
+* **`images/`** — Images used in this README.
