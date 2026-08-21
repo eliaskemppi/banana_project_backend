@@ -10,7 +10,7 @@ COPY requirements.txt .
 # Install dependencies
 
 # First, install the light-weight CPU versions of torch
-RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir fastapi uvicorn python-multipart Pillow
 RUN pip install --no-cache-dir -r requirements.txt
 
