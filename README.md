@@ -1,98 +1,108 @@
-# Banana Ripometer: End-to-End Image Classification
+# 🍌 Banana Ripometer: End-to-End Image Classification
 
-#### https://banana-project-frontend.onrender.com/
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Render-blue?style=for-the-badge&logo=render)](https://banana-project-frontend.onrender.com/)
+[![Video Demo](https://img.shields.io/badge/Video_Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/IBvfsqcrUNA)
 
-Starting the app might take a minute because it's hosted for free
+![Project Demo](images/demo.png)
 
-![Example](images/demo.png)
+> **Note:** The backend is hosted on a free Render instance. Initial cold starts may take a couple of minutes.
 
-Video demo: https://youtu.be/IBvfsqcrUNA
+---
 
-A full-stack machine learning application that predicts the ripeness of bananas using Computer Vision. This project benchmarks a custom-built CNN against a fine-tuned MobileNetV2 to demonstrate the trade-offs between model complexity and accuracy. This is an end-to-end project which means I did all parts of the project myself (with the help of a bit of ChatGPT), including data acquisition, model training and evaluation, model selection and a Next.js frontend.
+## Overview
 
-## Tech-Stack
+**Banana Ripometer** is a full-stack, end-to-end Machine Learning web application that predicts the ripeness stage of bananas using Computer Vision. 
 
-Python, PyTorch, FastAPI, Docker, Next.js, TailwindCSS
+The core goal of this project was to benchmark a custom-built Convolutional Neural Network (**BananaNet**) trained from scratch against a fine-tuned pre-trained backbone (**MobileNetV2**), demonstrating the dramatic impact of **Transfer Learning** on small-scale custom datasets:
 
-## Data
+- **MobileNetV2 (Fine-tuned):** `88.24%` Test Accuracy
+- **BananaNet (Custom CNN):** `58.82%` Test Accuracy
 
-### **Data acquisition**
+This is a complete end-to-end engineering effort covering:
+1. **Custom Data Acquisition & Preprocessing**
+2. **Model Architecture & Training Workflows in PyTorch**
+3. **Model Benchmarking & Evaluation**
+4. **FastAPI Backend Service API with Docker Containerization**
+5. **Interactive Next.js Frontend with TailwindCSS**
 
-I built my own custom dataset of self-collected pictures of bananas.
+---
 
-**Classes:** Under-ripe, Ripe, Spotty, Overripe.
+## Tech Stack
 
-Captured images under direct sunlight, kitchen LED lighting, low lighting etc. and varying backgrounds (countertops, wood, plates) to prevent the model from learning the background instead of the fruit. Also included multiple bananas of the same ripeness in photos.
+- **Machine Learning:** PyTorch, Torchvision, Scikit-learn, NumPy, Matplotlib, Seaborn
+- **Backend API:** FastAPI, Uvicorn, Python 3.10
+- **Frontend UI:** Next.js, React, TailwindCSS
+- **Deployment & DevOps:** Docker (CPU-optimized PyTorch build), Render
 
-#### **Split:**
+---
 
-Train/Val/Test. Due to the time required for data collection, the training set is class-imbalanced, with fewer overripe and spotty examples. Validation and test sets were balanced to provide a fair evaluation. The final evaluation was performed on the completely unseen test data.
+## Dataset & Pipeline
 
-Split sizes (188 images total):
+### Data Acquisition
+To avoid relying on clean synthetic datasets, a custom dataset of **188 photos** was collected in real-world conditions:
+- **4 Target Classes:** `Underripe`, `Ripe`, `Spotty`, `Overripe`.
+- **Environmental Variance:** Photos taken under direct sunlight, kitchen LED lights, low ambient lighting, and diverse backgrounds (countertops, wooden surfaces, plates) to prevent shortcuts/background bias.
+- **Multiple Objects:** Photos included single bananas as well as bunches with matching ripeness.
 
-- TRAIN: overripe: 17, ripe: 50, spotty: 22, underripe: 49
+### Train / Validation / Test Splits
+To ensure reliable evaluation, validation and test sets were strictly class-balanced, while training reflected real-world acquisition variance. Final evaluation was performed exclusively on unseen test data.
 
-- VAL: overripe: 8, ripe: 8, spotty: 8, underripe: 10
+| Split | Underripe | Ripe | Spotty | Overripe | Total |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Train** | 49 | 50 | 22 | 17 | **138** |
+| **Validation** | 10 | 8 | 8 | 8 | **34** |
+| **Test** | 10 | 8 | 8 | 8 | **34** |
 
-- TEST: overripe: 8, ripe: 8, spotty: 8, underripe: 10
+### Data Preprocessing & Augmentation
+- **Geometry:** Resized to standard `$224 \times 224$` dimensions.
+- **Normalization:** Applied ImageNet statistics ($\mu=[0.485, 0.456, 0.406]$, $\sigma=[0.229, 0.224, 0.225]$) to align with MobileNetV2 pre-trained weights.
+- **Augmentation:** Applied `RandomHorizontalFlip` to training batches to reduce overfitting.
 
-#### **Data preprocessing**
+---
 
-Raw images were transformed into tensors suitable for Deep Learning.
+## 🤖 Models & Evaluation
 
-- Normalization: Applied ImageNet-standard normalization ($\mu=[0.485, 0.456, 0.406]$, $\sigma=[0.229, 0.224, 0.225]$) to align with MobileNetV2's pre-trained weights. 
+Both models were trained using the **Cross-Entropy Loss** criterion and the **Adam** optimizer. Early stopping checkpoints were saved based on peak Validation Accuracy to prevent overfitting.
 
-- Geometry: Resized to $224 \times 224$ pixels.
+### 1. Fine-Tuned MobileNetV2 (Transfer Learning)
+- **Architecture:** Pre-trained MobileNetV2 backbone (frozen feature extractor) with a customized linear head (`1280 -> 4`).
+- **Learning Rate:** `0.003` | **Epochs:** `12`
+- **Test Accuracy:** **`88.24%`**
 
-#### **Data Augmentation:**
-
-To artificially expand the dataset and reduce overfitting, I implemented RandomHorizontalFlip to the training set.
-
-## Model selection
-
-I chose to display two models: A fine-tuned MobileNetV2 and a custom CNN built and trained from scratch. For both models, the checkpoint with the highest validation accuracy was selected to reduce overfitting.
-
-## Model Evaluation
-
-### MobileNetV2
-Accuracy: 88.24%
-
-Confusion Matrix
 ![MobileNetV2 Confusion Matrix](images/mobilenet_confusion.png)
 
-### Custom CNN
-Accuracy: 58.82%
+---
 
-Confusion Matrix
+### 2. Custom CNN (BananaNet)
+- **Architecture:** Lightweight 2-layer ConvNet (`3 -> 16 -> 32` channels with MaxPool) + fully-connected linear layers (`32 * 56 * 56 -> 128 -> 4`) with `0.5` Dropout.
+- **Learning Rate:** `0.001` | **Epochs:** `20`
+- **Test Accuracy:** **`58.82%`**
+
 ![CustomCNN Confusion Matrix](images/custom_confusion.png)
 
-MobileNetV2 outperforms the custom CNN despite both being trained on the same dataset. This demonstrates the benefit of transfer learning on relatively small image datasets.
+### Key Takeaways
+**Key Takeaway:** Transfer learning with MobileNetV2 significantly outperformed the custom CNN (`88.24%` vs `58.82%`) on the exact same dataset splits.  
 
-## Future work
+**Transfer Learning Efficiency:** MobileNetV2 leverages pre-trained low-level feature extractors (edges, textures, color gradients) learned from ImageNet, allowing it to generalize well despite the small dataset ($N=138$ training images).
 
-- I could add a 'Not a banana' option for images that get low confidence for every banana ripeness.
+**Custom Architecture Limitations:** `BananaNet` lacked sufficient depth (only 2 convolutional layers) to build high-level abstract representations of ripeness patterns. 
 
-- Collecting more data for the dataset would likely improve model performance.
+---
 
-## Structure
+## Repository Structure
 
 ```text
 banana-ripometer/
-├── images/
-├── saved_models/
-├── training/
+├── data/                  # Dataset splits (train/val/test)
+├── images/                # Screenshots & confusion matrix plots
+├── saved_models/          # Model state dict checkpoints (.pth)
+├── training/              # Jupyter Notebooks for model training
+│   ├── custom_cnn.ipynb
+│   └── mobilenet.ipynb
 ├── .gitignore
-├── Dockerfile
-├── main.py
-├── model_loading.py
-├── requirements.txt
-├── utils.py
+├── Dockerfile             # CPU-optimized Docker image build
+├── main.py                # FastAPI REST endpoint (/predict, /)
+├── model_loading.py       # Helper functions for PyTorch model initialization
+├── requirements.txt       # Python dependencies
+├── utils.py               # Image transformation pipeline
 └── README.md
-```
-
-* **`training/`** — Jupyter notebooks used for model training and evaluation.
-* **`saved_models/`** — Trained `.pth` model checkpoints.
-* **`images/`** — Images used in this README.
-* **`main.py`** — Runs FastAPI
-* **`model_loading.py`** — Contains a function that loads the trained models.
-* **`utils.py`** — Contains a function that applies the image transformation used in training.
