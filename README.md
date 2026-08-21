@@ -1,11 +1,30 @@
-# 🍌 Banana Ripometer: End-to-End Image Classification
+# Banana Ripometer: End-to-End Image Classification
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Render-blue?style=for-the-badge&logo=render)](https://banana-project-frontend.onrender.com/)
-[![Video Demo](https://img.shields.io/badge/Video_Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/IBvfsqcrUNA)
+
+> ### 🚀 **Quick Links & Live Demo**
+> <table>
+>   <tr>
+>     <td align="center" width="200">
+>       <a href="https://banana-project-frontend.onrender.com/">
+>         <img src="https://img.shields.io/badge/🌐_LIVE_APP-TRY_IT_NOW-00C853?style=for-the-badge&logoColor=white" alt="Live Demo" width="180"/>
+>       </a>
+>     </td>
+>     <td align="center" width="200">
+>       <a href="https://youtu.be/IBvfsqcrUNA">
+>         <img src="https://img.shields.io/badge/🎥_VIDEO-WATCH_DEMO-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Video Demo" width="180"/>
+>       </a>
+>     </td>
+>   </tr>
+> </table>
+>
+
+> **Note:** The web app is hosted on a free Render instance. Initial cold starts may take a couple of minutes.
+
+---
 
 ![Project Demo](images/demo.png)
 
-> **Note:** The backend is hosted on a free Render instance. Initial cold starts may take a couple of minutes.
+
 
 ---
 
@@ -54,7 +73,7 @@ To ensure reliable evaluation, validation and test sets were strictly class-bala
 | **Test** | 10 | 8 | 8 | 8 | **34** |
 
 ### Data Preprocessing & Augmentation
-- **Geometry:** Resized to standard `$224 \times 224$` dimensions.
+- **Geometry:** Resized to standard $224 \times 224$ dimensions.
 - **Normalization:** Applied ImageNet statistics ($\mu=[0.485, 0.456, 0.406]$, $\sigma=[0.229, 0.224, 0.225]$) to align with MobileNetV2 pre-trained weights.
 - **Augmentation:** Applied `RandomHorizontalFlip` to training batches to reduce overfitting.
 
@@ -65,7 +84,7 @@ To ensure reliable evaluation, validation and test sets were strictly class-bala
 Both models were trained using the **Cross-Entropy Loss** criterion and the **Adam** optimizer. Early stopping checkpoints were saved based on peak Validation Accuracy to prevent overfitting.
 
 ### 1. Fine-Tuned MobileNetV2 (Transfer Learning)
-- **Architecture:** Pre-trained MobileNetV2 backbone (frozen feature extractor) with a customized linear head (`1280 -> 4`).
+- **Architecture:** Pre-trained MobileNetV2 backbone (frozen feature extractor) with a customized linear head to predictict the 4 classes (`1280 -> 4`).
 - **Learning Rate:** `0.003` | **Epochs:** `12`
 - **Test Accuracy:** **`88.24%`**
 
