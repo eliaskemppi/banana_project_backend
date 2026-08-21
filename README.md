@@ -84,7 +84,7 @@ To ensure reliable evaluation, validation and test sets were strictly class-bala
 Both models were trained using the **Cross-Entropy Loss** criterion and the **Adam** optimizer. Early stopping checkpoints were saved based on peak Validation Accuracy to prevent overfitting.
 
 ### 1. Fine-Tuned MobileNetV2 (Transfer Learning)
-- **Architecture:** Pre-trained MobileNetV2 backbone (frozen feature extractor) with a customized linear head to predictict the 4 classes (`1280 -> 4`).
+- **Architecture:** Pre-trained MobileNetV2 backbone (frozen feature extractor) with a customized linear head to predict the 4 classes (`1280 -> 4`).
 - **Learning Rate:** `0.003` | **Epochs:** `12`
 - **Test Accuracy:** **`88.24%`**
 
